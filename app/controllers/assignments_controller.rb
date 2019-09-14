@@ -4,7 +4,8 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @workers = Worker.all
+    @projects = Project.all
   end
 
   # GET /assignments/1
@@ -24,13 +25,11 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
-    project = Project.find(params[:project_id])
-    worker = Worker.find(params[:assignment][:worker_id])
-    @assignment = Assignment.new(project_id: project.id, worker_id: worker.id)
+    @assignment = Assignment.new(assignment_params)
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to project, notice: 'Assignment was successfully created.' }
+        format.html { redirect_to @assignment.project, notice: 'Assignment was successfully created.' }
         format.json { render :show, status: :created, location: @assignment }
       else
         format.html { render :new }
