@@ -11,13 +11,14 @@
 <h2>Trabajadores Asignados</h2>
 
 <% @project.workers.each do |worker|%>
- <p><%= worker.name %></p>
+ <p><%= worker.name %>
+ <%= link_to 'Eliminar', remove_worker_from_project_path(worker, @project), method: :delete %></p>
 <% end %>
 
 <h2>Asignar Trabajador</h2>
 
 <%= form_with model: Assignment.new, local: :true do |f| %>
-  <%= f.select :worker_id, Worker.pluck(:name, :id) %> 
+  <%= f.select :worker_id, @project.available_workers.pluck(:name, :id) %> 
   <%= f.hidden_field :project_id, value: @project.id %> 
   <%= f.submit 'Create!' %>
 <% end %>
